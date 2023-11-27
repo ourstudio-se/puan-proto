@@ -17,14 +17,9 @@ message Interpretation {
 
 message PropositionInterpretationSet {
   // The proposition to interpret.
-  repeated puan_core.Composite proposition = 1;
+  repeated puan_core.Composite propositions = 1;
   // The interpretation to interpret the proposition with.
-  repeated Interpretation interpretation = 2;
-}
-
-message PropositionInterpretationCollection {
-  // The proposition-interpretation pairs to evaluate.
-  repeated PropositionInterpretationSet propositionInterpretationSet = 1;
+  repeated Interpretation interpretations = 2;
 }
 
 message BoundSet {
@@ -41,5 +36,5 @@ message BoundCollection {
 service EvaluationService {
 
   // Evaluates the given proposition-interpretation pairs.
-  rpc Evaluate (PropositionInterpretationCollection) returns (BoundCollection) {}
+  rpc Evaluate (PropositionInterpretationSet) returns (BoundCollection) {}
 }
