@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package puan_core;
+
+// Enum definition for Direction
+enum Direction {
+  Positive = 0;
+  Negative = 1;
+}
+
+// Enum definition for Bound
+message Bound {
+  int64 lower = 1;
+  int64 upper = 2;
+}
+
+// Message definition for Primitive variable
+message Primitive {
+  Bound bound = 1;
+  string id = 2;
+}
+
+// Message definition for Variable
+// A Variable is either one of composite or primitive
+message Variable {
+  oneof part {
+    Composite composite = 1;
+    Primitive primitive = 2;
+  }
+}
+
+// Message definition for Composite variable
+message Composite {
+  Direction direction = 1;
+  int64 bias = 2;
+  repeated Variable variables = 3;
+}
