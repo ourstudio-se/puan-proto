@@ -15,26 +15,31 @@ message Interpretation {
   repeated Fact facts = 1;
 }
 
-message PropositionInterpretationPair {
+message PropositionInterpretationSet {
   // The proposition to interpret.
-  puan_core.Composite proposition = 1;
+  repeated puan_core.Composite proposition = 1;
   // The interpretation to interpret the proposition with.
-  Interpretation interpretation = 2;
+  repeated Interpretation interpretation = 2;
 }
 
-message EvaluationRequest {
+message PropositionInterpretationCollection {
   // The proposition-interpretation pairs to evaluate.
-  repeated PropositionInterpretationPair propositionInterpretationPairs = 1;
+  repeated PropositionInterpretationSet propositionInterpretationSet = 1;
 }
 
-message EvaluationResponse {
+message BoundSet {
+  repeated puan_core.Bound bounds = 1;
+}
+
+message BoundCollection {
   // The evaluated propositions are bounds. If the lower and upper bound
   // are equal, the proposition is a fact or definite.
-  repeated puan_core.Bound evaluated = 1;
+  // This is a set of sets of bounds. 
+  repeated BoundSet bound_sets = 1;
 }
 
 service EvaluationService {
 
   // Evaluates the given proposition-interpretation pairs.
-  rpc Evaluate (EvaluationRequest) returns (EvaluationResponse) {}
+  rpc Evaluate (PropositionInterpretationCollection) returns (BoundCollection) {}
 }

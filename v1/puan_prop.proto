@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package puan_prop;
+
+import "puan_core.proto";
+
+message DependentVariable {
+    oneof dependent_variable {
+        AtLeast at_least = 1;
+    }
+}
+
+message IndependentVariable {
+    string id = 1;
+    puan_core.Bound bound = 2;
+}
+
+message Variable {
+    oneof ptype {
+        DependentVariable dependent = 1;
+        IndependentVariable independent = 2;
+    } 
+}
+
+message AtLeast {
+    uint32 value = 1;
+    repeated Variable variables = 2;
+}
+
+message AtMost {
+    uint32 value = 1;
+    repeated Variable variables = 2;
+}
+
+message And {
+    repeated Variable variables = 1;
+}
+
+message Or {
+    repeated Variable variables = 1;
+}
+
+message Xor {
+    repeated Variable variables = 1;
+}
+
+message Not {
+    Variable variable = 1;
+}
+
+message Implies {
+    Variable left = 1;
+    Variable right = 2;
+}
+
+message DependentVariableSet {
+    repeated DependentVariable dependents = 1;
+}
+
+message CompositeSet {
+    repeated puan_core.Composite composites = 1;
+}
+
+service PropositionService {
+    rpc ToComposite(DependentVariableSet) returns (CompositeSet) {}
+    rpc Negate(DependentVariable) returns (DependentVariable) {}
+}
