@@ -15,6 +15,17 @@ message Interpretation {
   repeated Fact facts = 1;
 }
 
+message PropositionInterpretationPair {
+  // The proposition to interpret.
+  puan_core.Composite proposition = 1;
+  // The interpretation to interpret the proposition with.
+  Interpretation interpretation = 2;
+}
+
+message PropositionInterpretationPairSet {
+  repeated PropositionInterpretationPair pairs = 1;
+}
+
 message PropositionInterpretationSet {
   // The proposition to interpret.
   repeated puan_core.Composite propositions = 1;
@@ -35,6 +46,10 @@ message BoundCollection {
 
 service EvaluationService {
 
-  // Evaluates the given proposition-interpretation pairs.
-  rpc Evaluate (PropositionInterpretationSet) returns (BoundCollection) {}
+  // Evaluates the given proposition-interpretation pairs, either streamed or not.
+  rpc EvaluatePairs (PropositionInterpretationPairSet) returns (BoundSet) {}
+  rpc EvaluatePairStreamed (stream PropositionInterpretationPair) returns (stream puan_core.Bound) {}
+
+  // Evaluates the given proposition-interpretation sets.
+  rpc EvaluateProduct (PropositionInterpretationSet) returns (BoundCollection) {}
 }
