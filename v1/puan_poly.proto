@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "puan_core.proto";
+
+package puan_poly;
+
+message SparseMatrix {
+    repeated int64 rows = 1;
+    repeated int64 cols = 2;
+    repeated int64 values = 3;
+}
+
+message SparsePolyhedron {
+    repeated SparseMatrix A = 1;
+    repeated int64 b = 2;
+}
+
+service PolyhedronService {
+    rpc FromComposite(puan_core.Composite) returns (SparsePolyhedron) {}
+}
