@@ -2,36 +2,32 @@ syntax = "proto3";
 
 package puan_core;
 
-// Enum definition for Direction
-enum Direction {
-  Positive = 0;
-  Negative = 1;
+// Enum definition for Coefficient
+enum BinaryCoefficient {
+  Negative = -1;
+  Positive = 1;
 }
 
 // Enum definition for Bound
+// Only supports positive numbers
 message Bound {
-  int64 lower = 1;
-  int64 upper = 2;
+  uint32 lower = 1;
+  uint32 upper = 2;
 }
 
-// Message definition for Primitive variable
-message Primitive {
-  Bound bound = 1;
-  string id = 2;
+// A Binary (GE) Inequality Constraint has either -1 or 1 as coefficient for all variables
+message BinaryInequalityConstraint {
+  BinaryCoefficient coefficient = 1;
+  repeated string relations = 2;
 }
 
-// Message definition for Variable
-// A Variable is either one of composite or primitive
-message Variable {
+message BicOrBound {
   oneof part {
-    Composite composite = 1;
-    Primitive primitive = 2;
+    BinaryInequalityConstraint bic = 1;
+    Bound bound = 2;
   }
 }
 
-// Message definition for Composite variable
-message Composite {
-  Direction direction = 1;
-  int64 bias = 2;
-  repeated Variable variables = 3;
+message LinearBoundedTree {
+  map<string, BicOrBound> nodes = 1;
 }
