@@ -4,52 +4,8 @@ import "puan_core.proto";
 
 package puan_eval;
 
-message Fact {
-  // The id to state a fact about.
-  string id = 1;
-  // The actual fact.
-  int64 value = 2;
-}
-
-message Interpretation {
-  repeated Fact facts = 1;
-}
-
-message PropositionInterpretationPair {
-  // The proposition to interpret.
-  puan_core.Composite proposition = 1;
-  // The interpretation to interpret the proposition with.
-  Interpretation interpretation = 2;
-}
-
-message PropositionInterpretationPairSet {
-  repeated PropositionInterpretationPair pairs = 1;
-}
-
-message PropositionInterpretationSet {
-  // The proposition to interpret.
-  repeated puan_core.Composite propositions = 1;
-  // The interpretation to interpret the proposition with.
-  repeated Interpretation interpretations = 2;
-}
-
-message BoundSet {
-  repeated puan_core.Bound bounds = 1;
-}
-
-message BoundCollection {
-  // The evaluated propositions are bounds. If the lower and upper bound
-  // are equal, the proposition is a fact or definite.
-  // This is a set of sets of bounds. 
-  repeated BoundSet bound_sets = 1;
-}
-
 service EvaluationService {
 
-  // Evaluates the given proposition-interpretation pairs, either streamed or not.
-  rpc EvaluatePairs (PropositionInterpretationPairSet) returns (BoundSet) {}
-  rpc EvaluatePairStreamed (stream PropositionInterpretationPair) returns (stream puan_core.Bound) {}
-
-  // Evaluates the given proposition-interpretation sets.
-  rpc EvaluateProduct (PropositionInterpretationSet) returns (BoundCollection) {}
+  // Propagates Linear Binary Trees in a streamed fashion.
+  rpc PropagateLBTStreamed (stream puan_core.LinearBoundedTree) returns (stream puan_core.LinearBoundedTree) {}
 }

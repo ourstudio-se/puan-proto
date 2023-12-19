@@ -2,23 +2,20 @@ syntax = "proto3";
 
 package puan_core;
 
-// Enum definition for Coefficient
-enum BinaryCoefficient {
-  Negative = -1;
-  Positive = 1;
-}
-
-// Enum definition for Bound
-// Only supports positive numbers
+// Message definition for Bound
 message Bound {
-  uint32 lower = 1;
-  uint32 upper = 2;
+  int64 lower = 1;
+  int64 upper = 2;
 }
 
-// A Binary (GE) Inequality Constraint has either -1 or 1 as coefficient for all variables
+message CoefRelation {
+  string id = 1;
+  int64 coefficient = 2;
+}
+
+// A Binary (GE) Inequality Constraint
 message BinaryInequalityConstraint {
-  BinaryCoefficient coefficient = 1;
-  repeated string relations = 2;
+  repeated CoefRelation relations = 2;
 }
 
 message BicOrBound {
@@ -30,4 +27,12 @@ message BicOrBound {
 
 message LinearBoundedTree {
   map<string, BicOrBound> nodes = 1;
+}
+
+service LbtEvaluationService {
+
+  // Propagates Linear Binary Trees in a streamed fashion.
+  rpc PropagateLbtStreamed (stream LinearBoundedTree) returns (stream LinearBoundedTree) {}
+  // Propagates Linear Binary Trees in a non-streamed fashion.
+  rpc PropagateLbt (LinearBoundedTree) returns (LinearBoundedTree) {}
 }

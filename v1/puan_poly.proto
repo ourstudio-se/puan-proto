@@ -15,6 +15,11 @@ message SparsePolyhedron {
     repeated int64 b = 2;
 }
 
+message SparsePolyhedronExtended {
+    SparsePolyhedron polyhedron = 1;
+    repeated puan_core.Primitive variables = 2;
+}
+
 service PolyhedronService {
-    rpc FromComposite(puan_core.Composite) returns (SparsePolyhedron) {}
+    rpc FromComposite(puan_core.Composite) returns (SparsePolyhedronExtended) {}
 }
