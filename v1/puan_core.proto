@@ -15,7 +15,8 @@ message CoefRelation {
 
 // A Binary (GE) Inequality Constraint
 message BinaryInequalityConstraint {
-  repeated CoefRelation relations = 2;
+  repeated CoefRelation relations = 1;
+  int64 bias = 2;
 }
 
 message BicOrBound {
